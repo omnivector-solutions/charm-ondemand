@@ -1,0 +1,12 @@
+name: ondemand
+summary: Open OnDemand provider
+maintainers:
+    - Omnivector Solutions <info@omnivector.solutions>
+description: |
+    Open OnDemand
+tags:
+    - OnDemand
+    - HPC
+
+series:
+    - focal
