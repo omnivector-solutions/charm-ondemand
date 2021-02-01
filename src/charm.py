@@ -27,7 +27,7 @@ class OndemandCharm(CharmBase):
         events = {
             self.on.install: self._on_install
         }
-        
+
         for event, handler in events.items():
             self.framework.observe(event, handler)
 
@@ -35,7 +35,7 @@ class OndemandCharm(CharmBase):
 
         self.unit.set_workload_version(VERSION)
 
-        self._ondemand_ops.setup_docker()
+        # self._ondemand_ops.setup_docker()
         self._ondemand_ops.setup_ondemand()
 
     def _on_config_changed(self, _):
