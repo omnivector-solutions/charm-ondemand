@@ -7,11 +7,11 @@ import logging
 from ops.charm import CharmBase
 from ops.main import main
 from ops.framework import StoredState
+from ops.model import ActiveStatus
 
 from ondemand_ops import OnDemandOps
+from ports import open_port
 from version import VERSION
-
-logger = logging.getLogger(__name__)
 
 
 class OndemandCharm(CharmBase):
@@ -19,6 +19,8 @@ class OndemandCharm(CharmBase):
 
     def __init__(self, *args):
         super().__init__(*args)
+
+        self.log = logging.getLogger(self.__class__.__name__)
 
         self._ondemand_ops = OnDemandOps()
 
@@ -31,17 +33,28 @@ class OndemandCharm(CharmBase):
         for event, handler in events.items():
             self.framework.observe(event, handler)
 
-    def _on_install(self):
+    def _on_install(self, event):
 
         self.unit.set_workload_version(VERSION)
 
-        # self._ondemand_ops.setup_docker()
+        # self.log.info("Installing dependencies")
+        # self._ondemand_ops.install_deps()
+
+        self.log.info("Installing docker")
+        self._ondemand_ops.setup_docker()
+
+        self.log.info("Running ondemand image")
         self._ondemand_ops.setup_ondemand()
+
+        self.log.info("Opening port")
+        open_port(8080)
+
+        self.unit.status = ActiveStatus("OnDemand installed")
 
     def _on_config_changed(self, _):
         current = self.config["thing"]
         if current not in self._stored.things:
-            logger.debug("found a new thing: %r", current)
+            self.log.debug("found a new thing: %r", current)
             self._stored.things.append(current)
 
     def _on_fortune_action(self, event):

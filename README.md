@@ -5,6 +5,9 @@ To build the ondemand charm, clone the project and build the charm using charmcr
 ```bash
 git clone https://username@github.com/omnivector-solutions/charm-ondemand
 
+# make sure dispatch is executable
+chmod +x /charm-ondemand/dispatch
+
 charmcraft build --from ./charm-ondemand
 ```
 This should produce a charm file, `ondemand.charm`.
