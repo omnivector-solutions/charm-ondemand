@@ -1,0 +1,10 @@
+#!/bin/bash
+# This hook installs the centos dependencies needed to run the charm,
+# creates the dispatch executable, regenerates the symlinks for start and
+# upgrade-charm, and kicks off the operator framework.
+set -e
+if ! [[ -f '.installed' ]]; then
+    apt install python3-distutils -y
+    touch .installed
+fi
+JUJU_DISPATCH_PATH="${JUJU_DISPATCH_PATH:-$0}" PYTHONPATH=lib:venv ./src/charm.py
