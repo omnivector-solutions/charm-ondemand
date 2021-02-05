@@ -1,3 +1,7 @@
+"""
+Core module for port handling operations
+"""
+
 from subprocess import run
 
 def _modify_port(start=None, end=None, protocol='tcp', hook_tool="open-port"):
